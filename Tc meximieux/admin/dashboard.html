@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TC Meximieux</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+        }
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 4px solid #1e3a8a;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .action-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid transparent;
+        }
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            border-color: #1e3a8a;
+        }
+        .action-icon {
+            font-size: 3rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <h1><i class="fas fa-cog"></i> Administration TC Meximieux</h1>
+            <div>
+                <a href="../index.html" style="color: white; margin-right: 1rem;">
+                    <i class="fas fa-eye"></i> Voir le site
+                </a>
+                <button onclick="logout()" class="btn-secondary" style="background: #f59e0b; color: #1e3a8a; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <h2>Tableau de bord</h2>
+        <p style="color: #6b7280; margin-bottom: 2rem;">Bienvenue dans l'interface d'administration</p>
+        
+        <div class="admin-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="eventsCount">0</div>
+                <div class="stat-label">Événements actifs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="teamCount">0</div>
+                <div class="stat-label">Membres d'équipe</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="partnersCount">0</div>
+                <div class="stat-label">Partenaires</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="offersCount">0</div>
+                <div class="stat-label">Offres actives</div>
+            </div>
+        </div>
+
+        <div class="admin-actions">
+            <!-- CORRIGEZ TOUS CES LIENS -->
+            <a href="manage-events.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Gérer les événements</h3>
+                <p>Créer, modifier ou supprimer des événements</p>
+            </a>
+            
+            <a href="manage-team.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Gérer l'équipe</h3>
+                <p>Modifier les membres et leurs rôles</p>
+            </a>
+            
+            <a href="manage-offers.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h3>Gérer les offres</h3>
+                <p>Modifier les tarifs et formules</p>
+            </a>
+            
+            <a href="manage-history.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <h3>Modifier l'histoire</h3>
+                <p>Mettre à jour l'histoire du club</p>
+            </a>
+            
+            <a href="manage-partners.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Gérer les partenaires</h3>
+                <p>Ajouter ou supprimer des partenaires</p>
+            </a>
+            
+            <a href="../index.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-external-link-alt"></i>
+                </div>
+                <h3>Voir le site</h3>
+                <p>Retourner sur le site public</p>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Vérifier la connexion
+        if (!localStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        // Charger les statistiques
+        function loadStats() {
+            const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+            
+            document.getElementById('eventsCount').textContent = data.events?.length || 0;
+            document.getElementById('teamCount').textContent = data.team?.length || 0;
+            document.getElementById('partnersCount').textContent = data.partners?.length || 0;
+            document.getElementById('offersCount').textContent = data.offers?.length || 0;
+        }
+
+        function logout() {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.href = 'login.html';
+        }
+
+        // Charger au démarrage
+        document.addEventListener('DOMContentLoaded', loadStats);
+    </script>
+</body>
+</html>

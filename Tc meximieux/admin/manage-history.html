@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histoire du club - TC Meximieux</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .admin-header { background: #1e3a8a; color: white; padding: 1rem 0; }
+        .admin-nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .admin-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .admin-section { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.75rem; border: 2px solid #f1f5f9; border-radius: 8px; }
+        .form-group textarea { min-height: 200px; resize: vertical; }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <h1>📖 Modifier l'histoire</h1>
+            <div>
+                <a href="dashboard.html" style="color: white; margin-right: 1rem;">← Dashboard</a>
+                <a href="../index.html" style="color: white;">Voir le site</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-section">
+            <h2>Histoire du TC Meximieux</h2>
+            <form id="historyForm">
+                <div class="form-group">
+                    <label>Titre *</label>
+                    <input type="text" id="historyTitle" required value="Notre Histoire">
+                </div>
+                <div class="form-group">
+                    <label>Contenu *</label>
+                    <textarea id="historyContent" required placeholder="Racontez l'histoire de votre club...">Fondé en 1985, le TC Meximieux n'a cessé de grandir et d'évoluer au fil des années. Notre club s'est construit autour de valeurs fortes : convivialité, partage et passion du tennis.</textarea>
+                </div>
+                <button type="submit" class="btn-primary">Enregistrer l'histoire</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        if (!localStorage.getItem('adminLoggedIn')) window.location.href = 'login.html';
+
+        // Charger l'histoire existante
+        const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+        if (data.history) {
+            document.getElementById('historyTitle').value = data.history.title || 'Notre Histoire';
+            document.getElementById('historyContent').value = data.history.content || '';
+        }
+
+        document.getElementById('historyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const historyData = {
+                title: document.getElementById('historyTitle').value,
+                content: document.getElementById('historyContent').value,
+                images: data.history?.images || []
+            };
+
+            if (!data.history) data.history = {};
+            data.history = historyData;
+            localStorage.setItem('tc_meximieux_data', JSON.stringify(data));
+            
+            alert('Histoire enregistrée avec succès !');
+        });
+    </script>
+</body>
+</html>

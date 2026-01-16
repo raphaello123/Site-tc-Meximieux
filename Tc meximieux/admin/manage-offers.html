@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gérer les offres - TC Meximieux</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .admin-header { background: #1e3a8a; color: white; padding: 1rem 0; }
+        .admin-nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .admin-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .admin-section { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.75rem; border: 2px solid #f1f5f9; border-radius: 8px; }
+        .offers-list { margin-top: 2rem; }
+        .offer-item { background: white; border: 1px solid #f1f5f9; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <h1>💰 Gérer les offres</h1>
+            <div>
+                <a href="dashboard.html" style="color: white; margin-right: 1rem;">← Dashboard</a>
+                <a href="../index.html" style="color: white;">Voir le site</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-section">
+            <h2>Créer une nouvelle offre</h2>
+            <form id="offerForm">
+                <div class="form-group">
+                    <label>Titre de l'offre *</label>
+                    <input type="text" id="offerTitle" required placeholder="Ex: Formule Enfants">
+                </div>
+                <div class="form-group">
+                    <label>Prix *</label>
+                    <input type="text" id="offerPrice" required placeholder="Ex: 180€/an">
+                </div>
+                <div class="form-group">
+                    <label>Caractéristiques (une par ligne)</label>
+                    <textarea id="offerFeatures" placeholder="Ex: 2h par semaine&#10;Encadrement qualifié&#10;Accès aux tournois"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="offerFeatured"> Offre mise en avant
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary">Créer l'offre</button>
+            </form>
+        </div>
+
+        <div class="admin-section">
+            <h2>Offres existantes</h2>
+            <div class="offers-list" id="offersList">
+                <!-- Offres chargées ici -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        if (!localStorage.getItem('adminLoggedIn')) window.location.href = 'login.html';
+
+        function loadOffers() {
+            const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+            const offers = data.offers || [];
+            const container = document.getElementById('offersList');
+            
+            if (offers.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6b7280;">Aucune offre créée</p>';
+                return;
+            }
+            
+            container.innerHTML = offers.map(offer => `
+                <div class="offer-item">
+                    <div>
+                        <h4>${offer.title} ${offer.featured ? '⭐' : ''}</h4>
+                        <p><strong>${offer.price}</strong></p>
+                        <p>${offer.features?.join(', ') || 'Aucune caractéristique'}</p>
+                    </div>
+                    <button onclick="deleteOffer(${offer.id})" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                        🗑️ Supprimer
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('offerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const features = document.getElementById('offerFeatures').value.split('\n').filter(f => f.trim());
+            
+            const offerData = {
+                id: Date.now(),
+                title: document.getElementById('offerTitle').value,
+                price: document.getElementById('offerPrice').value,
+                features: features,
+                featured: document.getElementById('offerFeatured').checked
+            };
+
+            const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+            if (!data.offers) data.offers = [];
+            data.offers.push(offerData);
+            localStorage.setItem('tc_meximieux_data', JSON.stringify(data));
+            
+            alert('Offre créée avec succès !');
+            this.reset();
+            loadOffers();
+        });
+
+        function deleteOffer(offerId) {
+            if (confirm('Supprimer cette offre ?')) {
+                const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+                data.offers = data.offers?.filter(o => o.id !== offerId) || [];
+                localStorage.setItem('tc_meximieux_data', JSON.stringify(data));
+                loadOffers();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadOffers);
+    </script>
+</body>
+</html>
