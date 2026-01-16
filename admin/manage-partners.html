@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gérer les partenaires - TC Meximieux</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+        }
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .admin-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #f1f5f9;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+        .logo-upload {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logo-upload:hover {
+            border-color: #1e3a8a;
+            background: #f8fafc;
+        }
+        .logo-upload i {
+            font-size: 2rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        .logo-preview {
+            max-width: 200px;
+            max-height: 100px;
+            margin: 1rem auto;
+            display: none;
+        }
+        .partners-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .partner-item {
+            background: white;
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .partner-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .partner-logo-preview {
+            width: 100%;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+        .partner-info h4 {
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+        .partner-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+        .no-partners {
+            text-align: center;
+            color: #6b7280;
+            padding: 3rem;
+            font-style: italic;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <h1><i class="fas fa-handshake"></i> Gérer les partenaires</h1>
+            <div>
+                <a href="dashboard.html" style="color: white; margin-right: 1rem;">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+                <a href="../index.html" style="color: white;">
+                    <i class="fas fa-eye"></i> Voir le site
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-section">
+            <h2>Ajouter un nouveau partenaire</h2>
+            <form id="partnerForm">
+                <div class="form-group">
+                    <label for="partnerName">Nom du partenaire *</label>
+                    <input type="text" id="partnerName" required placeholder="Ex: Boulangerie du Centre">
+                </div>
+                
+                <div class="form-group">
+                    <label for="partnerWebsite">Site web (optionnel)</label>
+                    <input type="url" id="partnerWebsite" placeholder="https://www.exemple.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="partnerDescription">Description (optionnel)</label>
+                    <textarea id="partnerDescription" placeholder="Ex: Partenaire officiel depuis 2020, spécialiste de la nutrition sportive"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Logo du partenaire (optionnel)</label>
+                    <div class="logo-upload" onclick="document.getElementById('partnerLogo').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Cliquez pour uploader un logo</p>
+                        <small>Formats acceptés: JPG, PNG, SVG (max 2MB)</small>
+                        <img id="logoPreview" class="logo-preview" alt="Aperçu du logo">
+                    </div>
+                    <input type="file" id="partnerLogo" accept="image/*" style="display: none;" onchange="previewLogo(event)">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="reset" class="btn-secondary">Annuler</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i> Ajouter le partenaire
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="admin-section">
+            <h2>Partenaires existants</h2>
+            <div class="partners-list" id="partnersList">
+                <!-- Les partenaires seront chargés ici -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Vérifier la connexion admin
+        if (!localStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        let currentLogoData = null;
+
+        // Aperçu du logo
+        function previewLogo(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('logoPreview');
+            
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Le fichier est trop volumineux (max 2MB)');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    currentLogoData = e.target.result; // Stocker l'image en base64
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Charger les partenaires
+        function loadPartners() {
+            const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+            const partners = data.partners || [];
+            const container = document.getElementById('partnersList');
+            
+            if (partners.length === 0) {
+                container.innerHTML = `
+                    <div class="no-partners">
+                        <i class="fas fa-handshake" style="font-size: 3rem; margin-bottom: 1rem; color: #d1d5db;"></i>
+                        <p>Aucun partenaire n'a été ajouté pour le moment</p>
+                        <p style="font-size: 0.875rem;">Ajoutez votre premier partenaire en utilisant le formulaire ci-dessus</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = partners.map(partner => `
+                <div class="partner-item">
+                    ${partner.logo && partner.logo !== 'default' ? 
+                        `<img src="${partner.logo}" class="partner-logo-preview" alt="${partner.name}">` :
+                        `<div class="partner-logo-preview" style="display: flex; align-items: center; justify-content: center; color: #6b7280;">
+                            <i class="fas fa-building" style="font-size: 2rem;"></i>
+                        </div>`
+                    }
+                    <div class="partner-info">
+                        <h4>${partner.name}</h4>
+                        <p style="color: #6b7280; margin-bottom: 0.5rem;">
+                            ${partner.website && partner.website !== '#' ? 
+                                `🌐 <a href="${partner.website}" target="_blank">${partner.website}</a>` : 
+                                '🌐 Pas de site web'}
+                        </p>
+                        ${partner.description ? `<p style="color: #6b7280; font-size: 0.875rem;">${partner.description}</p>` : ''}
+                    </div>
+                    <div class="partner-actions">
+                        <button class="btn-delete" onclick="deletePartner(${partner.id})">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Gérer l'ajout de partenaire
+        document.getElementById('partnerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const partnerData = {
+                id: Date.now(),
+                name: document.getElementById('partnerName').value,
+                website: document.getElementById('partnerWebsite').value || '#',
+                description: document.getElementById('partnerDescription').value || '',
+                logo: currentLogoData || 'default'
+            };
+
+            const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+            if (!data.partners) data.partners = [];
+            data.partners.push(partnerData);
+            localStorage.setItem('tc_meximieux_data', JSON.stringify(data));
+            
+            alert('Partenaire ajouté avec succès !');
+            resetForm();
+            loadPartners();
+        });
+
+        // Supprimer un partenaire
+        function deletePartner(partnerId) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce partenaire ?')) {
+                const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+                data.partners = data.partners?.filter(p => p.id !== partnerId) || [];
+                localStorage.setItem('tc_meximieux_data', JSON.stringify(data));
+                loadPartners();
+            }
+        }
+
+        // Réinitialiser le formulaire
+        function resetForm() {
+            document.getElementById('partnerForm').reset();
+            document.getElementById('logoPreview').style.display = 'none';
+            currentLogoData = null;
+        }
+
+        // Charger au démarrage
+        document.addEventListener('DOMContentLoaded', loadPartners);
+    </script>
+</body>
+</html>

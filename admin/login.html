@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - TC Meximieux</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .admin-login {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .login-container {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-logo {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+        .login-form {
+            text-align: left;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--light-bg);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+    </style>
+</head>
+<body class="admin-login">
+    <div class="login-container">
+        <div class="login-logo">
+            <i class="fas fa-tennis-ball"></i>
+        </div>
+        <h2 style="color: var(--primary-blue); margin-bottom: 2rem;">Espace Admin</h2>
+        
+        <form id="adminLoginForm" class="login-form">
+            <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" value="admin" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" value="tcmeximieux2024" required>
+            </div>
+            
+            <button type="submit" class="btn-primary" style="width: 100%;">
+                Se connecter
+            </button>
+        </form>
+        
+        <p style="margin-top: 2rem; text-align: center;">
+            <a href="../index.html" style="color: var(--gray-text); text-decoration: none;">
+                ← Retour au site
+            </a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'admin' && password === 'tcmeximieux2024') {
+                localStorage.setItem('adminLoggedIn', 'true');
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Identifiants incorrects');
+            }
+        });
+    </script>
+</body>
+</html>

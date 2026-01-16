@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gérer l'équipe - TC Meximieux</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-header { background: var(--primary-blue); color: var(--white); padding: 1rem 0; }
+        .admin-nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .admin-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .admin-section { background: var(--white); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--shadow); margin-bottom: 2rem; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-text); }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.75rem; border: 2px solid var(--light-bg); border-radius: var(--border-radius); font-size: 1rem; }
+        .form-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; }
+        .team-list { margin-top: 2rem; }
+        .team-item { background: var(--white); border: 1px solid var(--light-bg); border-radius: var(--border-radius); padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <h1><i class="fas fa-users"></i> Gérer l'équipe</h1>
+            <div>
+                <a href="dashboard.html" style="color: var(--white); margin-right: 1rem;">← Dashboard</a>
+                <a href="../index.html" style="color: var(--white);">Voir le site</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-section">
+            <h2>Ajouter un membre</h2>
+            <form id="teamForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nom complet *</label>
+                        <input type="text" id="memberName" required placeholder="Ex: Jean Dupont">
+                    </div>
+                    <div class="form-group">
+                        <label>Rôle *</label>
+                        <input type="text" id="memberRole" required placeholder="Ex: Président">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="memberDescription" placeholder="Description du membre..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="reset" class="btn-secondary">Annuler</button>
+                    <button type="submit" class="btn-primary">Ajouter le membre</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="admin-section">
+            <h2>Membres de l'équipe</h2>
+            <div class="team-list" id="teamList">
+                <!-- Membres chargés dynamiquement -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        if (!localStorage.getItem('adminLoggedIn')) window.location.href = 'login.html';
+        
+        function loadTeam() {
+            const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+            const team = data.team || [];
+            const container = document.getElementById('teamList');
+            
+            if (team.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--gray-text);">Aucun membre ajouté</p>';
+                return;
+            }
+            
+            container.innerHTML = team.map(member => `
+                <div class="team-item">
+                    <div>
+                        <h4>${member.name}</h4>
+                        <p style="color: var(--accent-gold);">${member.role}</p>
+                        <p>${member.description || 'Aucune description'}</p>
+                    </div>
+                    <button class="btn-delete" onclick="deleteMember(${member.id})" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                        <i class="fas fa-trash"></i> Supprimer
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('teamForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const memberData = {
+                id: Date.now(),
+                name: document.getElementById('memberName').value,
+                role: document.getElementById('memberRole').value,
+                description: document.getElementById('memberDescription').value,
+                photo: 'default'
+            };
+
+            const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+            if (!data.team) data.team = [];
+            data.team.push(memberData);
+            localStorage.setItem('tc_meximieux_data', JSON.stringify(data));
+            
+            alert('Membre ajouté avec succès !');
+            this.reset();
+            loadTeam();
+        });
+
+        function deleteMember(memberId) {
+            if (confirm('Supprimer ce membre ?')) {
+                const data = JSON.parse(localStorage.getItem('tc_meximieux_data') || '{}');
+                data.team = data.team?.filter(m => m.id !== memberId) || [];
+                localStorage.setItem('tc_meximieux_data', JSON.stringify(data));
+                loadTeam();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadTeam);
+    </script>
+</body>
+</html>

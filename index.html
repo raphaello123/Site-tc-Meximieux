@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC Meximieux - Club de Tennis</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎾</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-tennis-ball"></i>
+                <span>TC Meximieux</span>
+            </div>
+            <nav class="navigation">
+                <a href="#accueil">Accueil</a>
+                <a href="#evenements">Événements</a>
+                <a href="#club">Le Club</a>
+                <a href="#equipe">Équipe</a>
+                <a href="#offres">Offres</a>
+                <a href="#histoire">Histoire</a>
+                <a href="#partenaires">Partenaires</a>
+                <a href="admin/login.html" class="btn-login">Admin</a>
+            </nav>
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+<section class="hero" id="accueil" style="background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.6)), url('https://www.comcom-sgc.fr/wp-content/uploads/2021/01/terrain-tennis.jpg') center/cover no-repeat;">
+    <div class="container">
+        <div class="hero-content">
+            <h1>TC Meximieux</h1>
+            <p class="hero-subtitle">Votre club de tennis à Meximieux depuis 1985</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="scrollToSection('evenements')">
+                    Voir les événements
+                </button>
+                <button class="btn-secondary" onclick="window.open('https://tenup.fft.fr/club/50010046', '_blank')">
+                    Réserver un court
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Événements -->
+    <section class="events" id="evenements">
+        <div class="container">
+            <div class="section-header">
+                <h2>Événements à venir</h2>
+                <p>Découvrez les prochains tournois et animations du club</p>
+            </div>
+            <div class="events-grid" id="events-container">
+                <!-- Événements chargés dynamiquement -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Le Club -->
+    <section class="about" id="club">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <h2>Le TC Meximieux</h2>
+                    <p>Bienvenue au Tennis Club de Meximieux, un club convivial au cœur de la Dombes depuis 1985. Nous proposons des cours pour tous les niveaux et tous les âges.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-court-sport"></i>
+                            <div>
+                                <h4>4 Courts Couverts</h4>
+                                <p>Pour jouer toute l'année</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-user-tie"></i>
+                            <div>
+                                <h4>Encadrement Pro</h4>
+                                <p>Moniteurs diplômés d'État</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h4>300+ Membres</h4>
+                                <p>Communauté active</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Image du club</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Équipe -->
+    <section class="team" id="equipe">
+        <div class="container">
+            <div class="section-header">
+                <h2>Notre Équipe</h2>
+                <p>Des professionnels passionnés à votre service</p>
+            </div>
+            <div class="team-grid" id="team-container">
+                <!-- Équipe chargée dynamiquement -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Offres -->
+    <section class="offers" id="offres">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nos Offres</h2>
+                <p>Des formules adaptées à tous les niveaux et tous les budgets</p>
+            </div>
+            <div class="offers-grid" id="offers-container">
+                <!-- Offres chargées dynamiquement -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Histoire -->
+    <section class="history" id="histoire">
+        <div class="container">
+            <div class="section-header">
+                <h2>Notre Histoire</h2>
+                <p>Près de 40 ans de passion tennis à Meximieux</p>
+            </div>
+            <div class="history-content" id="history-container">
+                <!-- Histoire chargée dynamiquement -->
+            </div>
+        </div>
+    </section>
+
+    <!-- PARTENAIRES - SECTION AJOUTÉE -->
+    <section class="partners" id="partenaires">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nos Partenaires</h2>
+                <p>Ils nous font confiance et nous les remercions pour leur soutien</p>
+            </div>
+            <div class="partners-grid" id="partners-container">
+                <!-- Partenaires chargés dynamiquement -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Banderole Partenaires -->
+    <div class="partners-banner">
+        <div class="partners-scroll">
+            <div class="partners-track" id="partners-track">
+                <!-- Partenaires défilants -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>TC Meximieux</h3>
+                    <p>📍 Rue des Stades, 01800 Meximieux</p>
+                    <p>📧 <a href="mailto:tcmeximieux@gmail.com">tcmeximieux@gmail.com</a></p>
+                    <p>📞 04 74 00 00 00</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Réservation</h3>
+                    <a href="https://tenup.fft.fr/club/50010046" target="_blank" class="tenup-link">
+                        <i class="fas fa-calendar-check"></i>
+                        Réserver sur TenUp
+                    </a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Suivez-nous</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/people/Tennis-Club-Meximieux/100057604031244/" target="_blank">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://www.instagram.com/tcmeximieux/" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 TC Meximieux. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
+              
